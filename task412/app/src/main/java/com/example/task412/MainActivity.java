@@ -1,14 +1,36 @@
 package com.example.task412;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.app.Activity;
+import android.view.*;
+import android.widget.*;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.core.view.GestureDetectorCompat;
 
+public class MainActivity extends Activity {
+
+    private GestureDetectorCompat mDetector;
+    private TextView tvOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDetector = new GestureDetectorCompat(this, new MyGestListener());
+        tvOut = findViewById(R.id.tv);
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.mDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    class MyGestListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2,
+                               float velocityX, float velocityY) {
+            tvOut.setText(String.format("onFling: %s%s", event1.toString(), event2.toString()));
+            return true;
+        }
     }
 }
